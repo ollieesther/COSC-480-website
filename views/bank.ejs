@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainBloom Bank Garden</title>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/orange-juice');
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #dff6ff 0%, #f5fff0 100%);
+            color: #194b3d;
+        }
+        .page {
+            width: min(1100px, 94vw);
+            margin: 28px auto 40px;
+        }
+        .hero {
+            text-align: center;
+            font-family: 'Orange Juice', cursive;
+            color: #36a06e;
+            margin-bottom: 20px;
+        }
+        .hero h1 { font-size: 3.2rem; margin: 0; }
+        .hero p { font-size: 1.25rem; margin-top: 8px; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.92);
+            border: 2px solid #bceccf;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 14px 35px rgba(30,90,70,.08);
+        }
+        .title {
+            font-family: 'Orange Juice', cursive;
+            color: #2d9d68;
+            font-size: 2rem;
+            margin-top: 0;
+        }
+        .big-balance {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 8px 0 20px;
+        }
+        .plant-emoji {
+            font-size: 5rem;
+            text-align: center;
+            margin: 6px 0 8px;
+        }
+        .plant-name {
+            text-align: center;
+            font-size: 2rem;
+            font-family: 'Orange Juice', cursive;
+            color: #2a855c;
+        }
+        .mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .stat {
+            background: #f4fff5;
+            border: 1px solid #d3f3d8;
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 1rem;
+        }
+        .form-box { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-container, .care-box {
+            background: #f8fffb;
+            border: 1px solid #d5efdf;
+            border-radius: 18px;
+            padding: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #9bd2b2;
+            margin-top: 8px;
+            margin-bottom: 10px;
+        }
+        button, a.action-link {
+            border: none;
+            background: #49b675;
+            color: white;
+            padding: 11px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 6px;
+        }
+        .secondary { background: #6d8cf2; }
+        .warning { background: #f09e4d; }
+        .growth-shell {
+            width: 100%;
+            height: 18px;
+            border-radius: 999px;
+            background: #e4f3e8;
+            overflow: hidden;
+            margin: 10px 0 16px;
+        }
+        .growth-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #63cc7e, #3db58f);
+        }
+        .contract-hint {
+            margin-top: 12px;
+            background: #eef9ff;
+            border: 1px solid #d2ecff;
+            padding: 12px;
+            border-radius: 14px;
+            color: #35627d;
+        }
+        .contract-panel {
+            margin-top: 14px;
+            background: #f8fbff;
+            border: 1px solid #d7e4ff;
+            border-radius: 16px;
+            padding: 14px;
+            color: #2d4770;
+        }
+        .contract-line {
+            margin-top: 6px;
+            overflow-wrap: anywhere;
+        }
+        .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .logout-row {
+            margin-top: 20px;
+            text-align: center;
+        }
+        @media (max-width: 850px) {
+            .grid, .form-box { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="hero">
+            <h1>ChainBloom Bank Garden</h1>
+            <p>Welcome, <%= session.username %> — your savings account funds every step of your plant's growth.</p>
+        </div>
+
+        <div class="grid">
+            <section class="card">
+                <h2 class="title">Garden Bank</h2>
+                <div id="savingsLabel" class="big-balance">MetaMask Sepolia Balance: <%= Number(session.savings).toFixed(6) %> SepoliaETH</div>
+                <div class="form-box">
+                    <div class="form-container">
+                        <label><b>Add SepoliaETH</b></label>
+                        <input type="text" inputmode="decimal" placeholder="Amount in SepoliaETH" id="deposit" required>
+                        <button id="depositBtn">Deposit</button>
+                    </div>
+                    <div class="form-container">
+                        <label><b>Withdraw SepoliaETH</b></label>
+                        <input type="text" inputmode="decimal" placeholder="Amount in SepoliaETH" id="withdraw" required>
+                        <button id="withdrawBtn" class="secondary">Withdraw</button>
+                    </div>
+                </div>
+                <div class="contract-panel">
+                    <div class="contract-line" id="contractBalanceLabel">Synced Sepolia Wallet Balance: <%= Number(session.contract.balance).toFixed(6) %> SepoliaETH<%= session.contract.walletAddress ? ` (${session.contract.walletAddress.slice(0, 6)}...${session.contract.walletAddress.slice(-4)})` : '' %></div>
+                    <div class="contract-line" id="contractStatusLabel">Contract Status: <%= session.contract.status %></div>
+                    <div class="contract-line" id="contractEventLabel">Last Contract Action: <%= session.contract.lastEvent %></div>
+                    <div class="contract-line" id="contractTxLabel">Last Tx: <% if (session.contract.lastTxHash) { %><a href="https://sepolia.etherscan.io/tx/<%= session.contract.lastTxHash %>" target="_blank" rel="noopener"><%= session.contract.lastTxHash %></a><% } else { %>Pending<% } %></div>
+                    <div class="contract-line" id="contractEventCountLabel">Contract Events: <%= session.contract.eventCount %></div>
+                </div>
+                <div class="contract-hint" id="contractHint">Care actions send real SepoliaETH from MetaMask, so the transfer appears on Sepolia Etherscan.</div>
+                <button id="metamaskBtn" class="warning">Connect MetaMask</button>
+            </section>
+
+            <section class="card">
+                <h2 class="title">Collectible Plant</h2>
+                <div class="plant-emoji" id="plantEmoji"><%= session.plant.emoji %></div>
+                <div class="plant-name" id="plantNameLabel"><%= session.plant.name %></div>
+                <div style="text-align:center; color:#527a67;" id="nftLabel">NFT ID: <%= session.plant.nftId %></div>
+                <div class="growth-shell"><div class="growth-bar" id="growthBar" style="width:<%= session.plant.growthPoints %>%"></div></div>
+                <div class="mini-grid">
+                    <div class="stat" id="growthStageLabel">Growth Stage: <%= session.plant.growthStage %> / 5</div>
+                    <div class="stat" id="hydrationLabel">Hydration: <%= session.plant.hydration %>%</div>
+                    <div class="stat" id="healthLabel">Health: <%= session.plant.health %>%</div>
+                    <div class="stat" id="moodLabel">Mood: <%= session.plant.moodLabel %></div>
+                    <div class="stat" id="streakLabel">Care Streak: <%= session.plant.careStreak %></div>
+                    <div class="stat" id="totalCareLabel">Total Cares: <%= session.plant.totalCares %></div>
+                </div>
+                <div class="stat" style="margin-top:12px;" id="actionLabel">Last Action: <%= session.plant.lastAction %></div>
+                <div class="care-box" style="margin-top:16px;">
+                    <label><b>Rename your plant</b></label>
+                    <input type="text" id="plantNameInput" placeholder="Enter a new name">
+                    <button id="renameBtn">Rename Plant</button>
+                </div>
+                <div class="care-box" style="margin-top:14px;">
+                    <label><b>Care actions</b></label>
+                    <div class="actions-row">
+                        <button id="waterBtn">Water (0.00003 SepoliaETH)</button>
+                        <button id="sunlightBtn" class="secondary">Sunlight (0.00005 SepoliaETH)</button>
+                        <button id="feedBtn" class="warning">Feed (0.00007 SepoliaETH)</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="logout-row">
+            <a class="action-link" href="/logout">Logout</a>
+        </div>
+    </div>
+    <script>
+        window.chainBloomWalletConfig = <%- JSON.stringify(walletConfig) %>;
+    </script>
+    <script src="/bankScript.js"></script>
+</body>
+</html>

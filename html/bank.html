@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            text-align: center;
+            background-image: url('/bowie.jpg');
+            background-repeat: no-repeat;
+            background-size: 110%;
+            width: auto;
+        }
+
+        .container {
+            background-color: #fff000;
+            border: 2px solid #000;
+            height: 600px;
+            width: auto;
+            margin-left: 400px;
+            margin-right: 400px;
+            margin-top: 40px;
+        }
+
+        h1 {
+            color: #000;
+            -webkit-text-stroke: 1px #000;
+            margin-top: 40px;
+            padding-top: 30px;
+        }
+
+        h2 {
+            color: #000;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        input[type=text] {
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        label {
+            margin-right: 290px;
+            margin-top: 100px;
+            margin-bottom: 20px;
+        }
+
+        .form-box {
+            border: 2px solid #000;
+            box-sizing: border-box;
+            background-color: #fff;
+            width: 300px;
+            height: 320px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        .form-container {
+            vertical-align: middle;
+            padding: 16px;
+            padding-bottom: 2px;
+            margin: auto;
+        }
+
+        .button_container {
+            vertical-align: middle;
+            padding-left: 60px;
+            margin: 20px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+
+
+    <title>BOWIE BANK</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>BOWIE BANK</h1>
+        <h2>Welcome, <%= session.username %>
+        </h2>
+
+        <div>
+            <h2 id="savingsLabel">Savings: $ <%= session.savings %>
+            </h2>
+        </div>
+
+        <div class="form-box">
+            <div class="form-container">
+                <label for="depositLabel"><b>Deposit</b></label>
+                <div class="input-field">
+                    <input type="text" inputmode="numeric" placeholder="$$$" name="deposit" id="deposit" required>
+                </div>
+                <button id="depositBtn">Deposit</button>
+            </div>
+            <div class="form-container">
+                <label for="withdrawLabel"><b>Withdraw</b></label>
+                <div class="input-field">
+                    <input type="text" inputmode="numeric" placeholder="$$$" name="withdraw" id="withdraw" required>
+                </div>
+                <button id="withdrawBtn">Withdraw</button>
+            </div>
+        </div>
+        <a href="/logout">Logout</a>
+    </div>
+
+
+    <script src="/bankScript.js"></script>
+</body>
+
+</html>
