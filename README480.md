@@ -71,6 +71,58 @@ From the project folder:
 npm install
 ```
 
+## Run With Docker
+
+Docker can run both the Express app and MySQL for you. You only need Docker Desktop or a compatible Docker Engine with Docker Compose.
+
+1. Copy the example environment file if you do not already have a local `.env`:
+
+```bash
+cp .env.example .env
+```
+
+2. Update `.env` if you want different database credentials, port, wallet addresses, or session secret.
+
+3. Build and start the containers:
+
+```bash
+docker compose up --build
+```
+
+4. Open the app:
+
+```text
+http://127.0.0.1:3000
+```
+
+The app container uses `HOST=0.0.0.0` internally so it is reachable through Docker's published port. MySQL is available to the app on Docker's internal network as `db:3306`, and its data is stored in the `mysql-data` Docker volume.
+
+To confirm the containers are running:
+
+```bash
+docker compose ps
+```
+
+To view app logs:
+
+```bash
+docker compose logs -f app
+```
+
+To stop the app:
+
+```bash
+docker compose down
+```
+
+To also delete the local Docker database volume:
+
+```bash
+docker compose down -v
+```
+
+If port `3000` is already in use, change `PORT` in `.env`, then run `docker compose up --build` again.
+
 ## How To Run The App
 
 Use these commands from the project folder:

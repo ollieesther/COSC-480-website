@@ -1,0 +1,43 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      DB_HOST: db
+      DB_USER: ${DB_USER:-chainbloom}
+      DB_PASSWORD: ${DB_PASSWORD:-chainbloom_password}
+      DB_DATABASE: ${DB_DATABASE:-credentials}
+      DB_PORT: 3306
+      DB_DIALECT: mysql
+      CONTRACT_ADDRESS: ${CONTRACT_ADDRESS:-0xChainBloomDemoContract}
+      BANK_WALLET_ADDRESS: ${BANK_WALLET_ADDRESS:-}
+      CARE_WALLET_ADDRESS: ${CARE_WALLET_ADDRESS:-}
+      METAMASK_BUY_URL: ${METAMASK_BUY_URL:-https://portfolio.metamask.io/buy}
+      SESSION_SECRET: ${SESSION_SECRET:-change_this_session_secret}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-credentials}
+      MYSQL_USER: ${DB_USER:-chainbloom}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-chainbloom_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

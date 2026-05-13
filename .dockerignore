@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+.npm-cache
+.npmrc
+node_modules
+npm-debug.log
+Dockerfile
+docker-compose.yml
